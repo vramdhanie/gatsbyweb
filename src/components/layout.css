@@ -1,5 +1,22 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
+
+:root {
+  --primary: #26717f;
+  --primaryLight: #5aa0ae;
+  --primaryDark: #004553;
+  --secondary: #db840a;
+  --secondaryLight: #ffb446;
+  --secondaryDark: #a45700;
+  --primaryText: #ffffff;
+  --secondaryText: #000000;
+  --mainTransition: all 0.3s linear;
+  --mainSpacing: 4px;
+  --lightShadow: 2px 5px 3px 0px rgba(0, 0, 0, 0.5);
+  --darkShadow: 4px 10px 5px 0px rgba(0, 0, 0, 0.5);
+}
+
 html {
-  font-family: sans-serif;
+  font-family: "Roboto", sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
@@ -619,4 +636,39 @@ pre tt:after {
   html {
     font-size: 100%;
   }
+}
+
+.hero {
+  min-height: calc(100vh - 62px);
+  background: linear-gradient(rgba(63, 208, 212, 0.7), rgba(0, 0, 0, 0.7)),
+    url("../images/bg3.jpg") center/cover no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-white,
+.btn-primary {
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: var(--mainSpacing);
+  color: var(--mainWhite);
+  border: 2px solid var(--primaryText);
+  padding: 0.9rem 1.6rem;
+  display: inline-block;
+  transition: var(--mainTransition);
+  cursor: pointer;
+}
+.btn-white:hover {
+  background: var(--primaryText);
+  color: var(--primary);
+}
+.btn-primary {
+  background: var(--primary);
+  color: var(--mainWhite);
+  border: 2px solid var(--primary);
+}
+.btn-primary:hover {
+  background: transparent;
+  color: var(--primary);
 }
