@@ -4,11 +4,11 @@ export default [
     text: "home",
   },
   {
-    path: "/contact",
-    text: "contact",
-  },
-  {
     path: "/articles",
     text: "articles",
+  },
+  {
+    path: "/contact",
+    text: "contact",
   },
 ]
