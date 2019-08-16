@@ -2,6 +2,7 @@
   text-align: center;
   letter-spacing: var(--mainSpacing);
   color: var(--primaryText);
+  text-shadow: 0 0 2px black;
 }
 .banner h1 {
   font-size: 3.3rem;
