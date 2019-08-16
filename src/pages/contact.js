@@ -1,24 +1,32 @@
 import React from "react"
-import { Link } from "gatsby"
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import Banner from "../components/banner"
-import styles from "../css/contact.module.css"
+import { graphql } from "gatsby"
+import Hero from "../components/hero"
 
-const Contact = () => (
+const Contact = ({ data }) => (
   <Layout>
     <SEO title="Contact" />
-    <header className={styles.contactHeader}>
+    <Hero img={data.contactBg.childImageSharp.fluid}>
       <Banner>
         <h1>Contact Page</h1>
-        <p>This is how to get in touch with me.</p>
-        <Link to="/" className="btn-white">
-          Go back to the homepage
-        </Link>
       </Banner>
-    </header>
+    </Hero>
   </Layout>
 )
 
 export default Contact
+
+export const query = graphql`
+  query {
+    contactBg: file(relativePath: { eq: "gate_shrine.jpg" }) {
+      childImageSharp {
+        fluid(quality: 90, maxWidth: 4160) {
+          ...GatsbyImageSharpFluid_withWebp
+        }
+      }
+    }
+  }
+`
