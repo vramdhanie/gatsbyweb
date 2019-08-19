@@ -5,6 +5,7 @@ import SEO from "../components/seo"
 import Banner from "../components/banner"
 import { graphql } from "gatsby"
 import Hero from "../components/hero"
+import Form from "../components/contact/form"
 
 const Contact = ({ data }) => (
   <Layout>
@@ -14,6 +15,7 @@ const Contact = ({ data }) => (
         <h1>Contact Page</h1>
       </Banner>
     </Hero>
+    <Form />
   </Layout>
 )
 
