@@ -13,10 +13,11 @@
   --mainSpacing: 4px;
   --lightShadow: 2px 5px 3px 0px rgba(0, 0, 0, 0.5);
   --darkShadow: 4px 10px 5px 0px rgba(0, 0, 0, 0.5);
+  --font: "Roboto", sans-serif;
 }
 
 html {
-  font-family: "Roboto", sans-serif;
+  font-family: var(--font);
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
@@ -217,7 +218,7 @@ html {
 }
 body {
   color: hsla(0, 0%, 0%, 0.8);
-  font-family: georgia, serif;
+  font-family: var(--font);
   font-weight: normal;
   word-wrap: break-word;
   font-kerning: normal;
