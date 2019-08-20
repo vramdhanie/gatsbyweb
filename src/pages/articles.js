@@ -3,16 +3,23 @@ import Layout from "../components/layout"
 import { graphql } from "gatsby"
 import Hero from "../components/hero"
 import Banner from "../components/banner"
+import ArticleList from "../components/articleList"
 
 const Article = ({ data }) => {
+  console.log(data)
+  const {
+    mdx: { edges: articles },
+    articleBg,
+  } = data
+
   return (
     <Layout>
-      <Hero img={data.articleBg.childImageSharp.fluid}>
+      <Hero img={articleBg.childImageSharp.fluid}>
         <Banner>
           <h1>Articles</h1>
         </Banner>
       </Hero>
-      <div>This is a list of articles!</div>
+      <ArticleList articles={articles} />
     </Layout>
   )
 }
@@ -25,6 +32,27 @@ export const query = graphql`
       childImageSharp {
         fluid(quality: 90, maxWidth: 4160) {
           ...GatsbyImageSharpFluid_withWebp
+        }
+      }
+    }
+    mdx: allMdx(sort: { fields: frontmatter___date, order: DESC }) {
+      totalCount
+      edges {
+        node {
+          frontmatter {
+            title
+            slug
+            date(formatString: "D MMMM YYYY")
+            author
+            image {
+              childImageSharp {
+                fluid {
+                  ...GatsbyImageSharpFluid_withWebp
+                }
+              }
+            }
+          }
+          excerpt
         }
       }
     }
