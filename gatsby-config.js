@@ -35,14 +35,34 @@ module.exports = {
       resolve: `gatsby-plugin-styled-components`,
       options: {},
     },
+    "gatsby-plugin-transition-link",
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        name: `images`,
-        path: `${__dirname}/src/images/`,
+        name: `articles`,
+        path: `${__dirname}/src/content/`,
       },
     },
-    "gatsby-plugin-transition-link",
+    `gatsby-plugin-mdx`,
+    {
+      resolve: `gatsby-transformer-remark`,
+      option: {
+        plugins: [
+          {
+            resolve: `gatsby-remark-prismjs`,
+            options: {
+              classPrefix: "language-",
+              inlineCodeMarker: null,
+              alias: {
+                js: "javascript",
+              },
+              showLineNumbers: false,
+              noInlineHighlight: false,
+            },
+          },
+        ],
+      },
+    },
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,
