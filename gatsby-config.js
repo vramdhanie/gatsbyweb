@@ -7,6 +7,7 @@ module.exports = {
     title: `VRR`,
     description: ``,
     author: `@vramdhanie`,
+    siteUrl: `https://vincentramdhanie.com`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -43,7 +44,20 @@ module.exports = {
         path: `${__dirname}/src/content/`,
       },
     },
-    `gatsby-plugin-mdx`,
+    {
+      resolve: `gatsby-plugin-mdx`,
+      options: {
+        plugins: [`gatsby-remark-images`],
+        gatsbyRemarkPlugins: [
+          {
+            resolve: `gatsby-remark-images`,
+            options: {
+              maxWidth: 590,
+            },
+          },
+        ],
+      },
+    },
     {
       resolve: `gatsby-transformer-remark`,
       option: {
@@ -62,6 +76,15 @@ module.exports = {
           },
         ],
       },
+    },
+    `gatsby-plugin-sitemap`,
+    {
+      resolve: `gatsby-plugin-robots-txt`,
+      options: {
+        host: 'https://vincentramdhanie.com',
+        sitemap: 'https://vincentramdhanie.com/sitemap.xml',
+        policy: [{ userAgent: '*', allow: '/' }]
+      }
     },
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
