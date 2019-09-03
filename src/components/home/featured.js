@@ -1,6 +1,6 @@
 import React from "react"
 import Title from "../title"
-import FeaturedCard from "../FeaturedCard"
+import FeaturedCard from "../featuredCard"
 import styled from 'styled-components'
 
 const Featured = ({ articles, className }) => {
