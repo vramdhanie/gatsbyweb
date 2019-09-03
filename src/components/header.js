@@ -1,35 +1,62 @@
-import { Link } from "gatsby"
+import AniLink from "gatsby-plugin-transition-link/AniLink"
 import PropTypes from "prop-types"
-import React from "react"
+import React, { useState } from "react"
 
-const Header = ({ siteTitle }) => (
-  <header
-    style={{
-      background: `rebeccapurple`,
-      marginBottom: `1.45rem`,
-    }}
-  >
-    <div
-      style={{
-        margin: `0 auto`,
-        maxWidth: 960,
-        padding: `1.45rem 1.0875rem`,
-      }}
-    >
-      <h1 style={{ margin: 0 }}>
-        <Link
-          to="/"
-          style={{
-            color: `white`,
-            textDecoration: `none`,
-          }}
+import { FaAlignRight } from "react-icons/fa"
+import links from "../constants/links"
+import social from "../constants/social"
+import styles from "../css/header.module.css"
+import Logo from './logo'
+
+const Header = ({ siteTitle }) => {
+  const [isOpen, setNav] = useState(false)
+  const toggleNav = () => {
+    setNav(isOpen => !isOpen)
+  }
+  return (
+    <nav className={styles.navbar}>
+      <div className={styles.navCenter}>
+        <div className={styles.navHeader}>
+          <AniLink fade to="/">
+            <Logo />
+          </AniLink>
+          <button type="button" className={styles.logoBtn} onClick={toggleNav}>
+            <FaAlignRight className={styles.logoIcon} />
+          </button>
+        </div>
+        <ul
+          className={
+            isOpen
+              ? `${styles.navLinks} ${styles.showNav}`
+              : `${styles.navLinks}`
+          }
         >
-          {siteTitle}
-        </Link>
-      </h1>
-    </div>
-  </header>
-)
+          {links.map((item, index) => {
+            return (
+              <li key={index}>
+                <AniLink fade to={item.path}>
+                  {item.text}
+                </AniLink>
+              </li>
+            )
+          })}
+        </ul>
+        <div className={styles.navSocialLinks}>
+          {social.map((item, index) => (
+            <a
+              key={index}
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {item.icon}
+            </a>
+          ))}
+        </div>
+      </div>
+    </nav>
+  )
+}
 
 Header.propTypes = {
   siteTitle: PropTypes.string,

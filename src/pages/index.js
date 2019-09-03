@@ -1,21 +1,60 @@
 import React from "react"
-import { Link } from "gatsby"
+import AniLink from "gatsby-plugin-transition-link/AniLink"
 
 import Layout from "../components/layout"
-import Image from "../components/image"
 import SEO from "../components/seo"
 
-const IndexPage = () => (
+import Hero from "../components/hero"
+import Banner from "../components/banner"
+import About from "../components/home/about"
+import Featured from "../components/home/featured"
+import { graphql } from "gatsby"
+
+const IndexPage = ({ data }) => (
   <Layout>
     <SEO title="Home" />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
-    </div>
-    <Link to="/page-2/">Go to page 2</Link>
+    <Hero home="true" img={data.homeBg.childImageSharp.fluid}>
+      <Banner title="Collective Action" info="United Vision">
+        <AniLink fade to="/articles" className="btn-white">
+          explore articles
+        </AniLink>
+      </Banner>
+    </Hero>
+    <About />
+    <Featured articles={data.featured.edges} />
   </Layout>
 )
 
 export default IndexPage
+
+export const query = graphql`
+  query {
+    homeBg: file(relativePath: { eq: "bg3.jpg" }) {
+      childImageSharp {
+        fluid(quality: 90, maxWidth: 4160) {
+          ...GatsbyImageSharpFluid_withWebp
+        }
+      }
+    }
+    featured: allMdx(sort: { fields: frontmatter___date, order: DESC }, limit: 3) {
+      edges {
+        node {
+          frontmatter {
+            title
+            slug
+            date(formatString: "D MMMM YYYY")
+            author
+            image {
+              childImageSharp {
+                fluid {
+                  ...GatsbyImageSharpFluid_withWebp
+                }
+              }
+            }
+          }
+          excerpt
+        }
+      }
+    }
+  }
+`
