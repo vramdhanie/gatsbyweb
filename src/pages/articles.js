@@ -6,7 +6,6 @@ import Banner from "../components/banner"
 import ArticleList from "../components/articleList"
 
 const Article = ({ data }) => {
-  console.log(data)
   const {
     mdx: { edges: articles },
     articleBg,
