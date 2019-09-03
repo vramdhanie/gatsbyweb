@@ -4,6 +4,8 @@ import styled from "styled-components"
 import { graphql, useStaticQuery } from "gatsby"
 import Img from "gatsby-image"
 
+import AniLink from "gatsby-plugin-transition-link/AniLink"
+
 const getImage = graphql`
   query aboutImage {
     fluid: file(relativePath: { eq: "chile_temple.jpg" }) {
@@ -34,7 +36,9 @@ const About = () => {
           <h4>Software and Data</h4>
           <p>A collection of articles and tutorials about software development and programming.</p>
           <p></p>
-          <button className="btn-primary">Read more</button>
+          <AniLink fade to="/about" className="btn-primary">
+            Read more
+        </AniLink>
         </article>
       </div>
     </Wrapper>
