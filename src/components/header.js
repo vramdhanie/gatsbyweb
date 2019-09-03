@@ -6,6 +6,7 @@ import { FaAlignRight } from "react-icons/fa"
 import links from "../constants/links"
 import social from "../constants/social"
 import styles from "../css/header.module.css"
+import Logo from './logo'
 
 const Header = ({ siteTitle }) => {
   const [isOpen, setNav] = useState(false)
@@ -17,7 +18,7 @@ const Header = ({ siteTitle }) => {
       <div className={styles.navCenter}>
         <div className={styles.navHeader}>
           <AniLink fade to="/">
-            {siteTitle}
+            <Logo />
           </AniLink>
           <button type="button" className={styles.logoBtn} onClick={toggleNav}>
             <FaAlignRight className={styles.logoIcon} />

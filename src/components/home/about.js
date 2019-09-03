@@ -32,8 +32,8 @@ const About = () => {
         </article>
         <article className="about-info">
           <h4>Software and Data</h4>
-          <p>What a wonderful world</p>
-          <p>I see trees</p>
+          <p>A collection of articles and tutorials about software development and programming.</p>
+          <p></p>
           <button className="btn-primary">Read more</button>
         </article>
       </div>

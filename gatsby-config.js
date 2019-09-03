@@ -4,7 +4,7 @@ require("dotenv").config({
 
 module.exports = {
   siteMetadata: {
-    title: `VRR`,
+    title: `Collective Action, United Vision`,
     description: ``,
     author: `@vramdhanie`,
     siteUrl: `https://vincentramdhanie.com`,

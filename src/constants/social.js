@@ -1,17 +1,17 @@
 import React from "react"
-import { FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa"
+import { FaStackOverflow, FaTwitter, FaGithub } from "react-icons/fa"
 
 export default [
   {
-    icon: <FaFacebook />,
-    url: "https://facebook.com",
+    icon: <FaStackOverflow />,
+    url: "https://stackoverflow.com/users/27439/vincent-ramdhanie?tab=profile",
   },
   {
     icon: <FaTwitter />,
-    url: "https://twitter.com",
+    url: "https://twitter.com/vramdhanie",
   },
   {
-    icon: <FaLinkedin />,
-    url: "https://linkedin.com",
+    icon: <FaGithub />,
+    url: "https://github.com/vramdhanie",
   },
 ]

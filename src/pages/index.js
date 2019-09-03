@@ -14,14 +14,14 @@ const IndexPage = ({ data }) => (
   <Layout>
     <SEO title="Home" />
     <Hero home="true" img={data.homeBg.childImageSharp.fluid}>
-      <Banner title="Boogey Woo" info="Boo hoo yoo">
+      <Banner title="Collective Action" info="United Vision">
         <AniLink fade to="/articles" className="btn-white">
           explore articles
         </AniLink>
       </Banner>
     </Hero>
     <About />
-    <Featured />
+    <Featured articles={data.featured.edges} />
   </Layout>
 )
 
@@ -33,6 +33,26 @@ export const query = graphql`
       childImageSharp {
         fluid(quality: 90, maxWidth: 4160) {
           ...GatsbyImageSharpFluid_withWebp
+        }
+      }
+    }
+    featured: allMdx(sort: { fields: frontmatter___date, order: DESC }, limit: 3) {
+      edges {
+        node {
+          frontmatter {
+            title
+            slug
+            date(formatString: "D MMMM YYYY")
+            author
+            image {
+              childImageSharp {
+                fluid {
+                  ...GatsbyImageSharpFluid_withWebp
+                }
+              }
+            }
+          }
+          excerpt
         }
       }
     }

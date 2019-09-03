@@ -4,6 +4,11 @@
   align-items: center;
   padding: 1rem 1.25rem;
 }
+
+.nav-header a {
+  text-decoration: none;
+}
+
 .logo-btn {
   background: transparent;
   border: none;
