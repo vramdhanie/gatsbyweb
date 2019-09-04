@@ -8,8 +8,7 @@ steps:
   - name: node
     entrypoint: yarn
     args: ["build"]
+    env: ['_GOOGLE_ANALYTICS_KEY=$_GOOGLE_ANALYTICS_KEY']
   - name: node
     entrypoint: "./node_modules/.bin/firebase"
     args: ["deploy", "--project", "$PROJECT_ID", "--token", "$_TOKEN"]
-substitutions:
-  _GOOGLE_ANALYTICS_KEY: $_GOOGLE_ANALYTICS_KEY    
