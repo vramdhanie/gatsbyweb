@@ -1,27 +1,149 @@
 ---
-title: First Article
-slug: first-article
+title: Decomposing React Components
+slug: decomposing_react_components
 image: ./images/collins_gate.jpg
-date: 2019-08-20
+date: 2019-09-05
 author: Vincent Ramdhanie
+level: beginner
+tags: react components refactor
 ---
 
-ALL praise be to God Who hath, through the power of Truth, sent down this Book unto His servant, that it may serve as a shining light for all mankind.… Verily this is none other than the sovereign Truth; it is the Path which God hath laid out for all that are in heaven and on earth. Let him then who will, take for himself the right path unto his Lord. Verily this is the true Faith of God, and sufficient witness are God and such as are endowed with the knowledge of the Book. This is indeed the eternal Truth which God, the Ancient of Days, hath revealed unto His omnipotent Word—He Who hath been raised up from the midst of the Burning Bush. This is the Mystery which hath been hidden from all that are in heaven and on earth, and in this wondrous Revelation it hath, in very truth, been set forth in the Mother Book by the hand of God, the Exalted.…
 
-O concourse of kings and of the sons of kings! Lay aside, one and all, your dominion which belongeth unto God.…
+Consider this scenario. You inherit a React application or maybe revisit one of your older application and find that while the code works fine one of your components is a bit too complicated and you wish to refactor it into a series of smaller components.
 
-Let not thy sovereignty deceive thee, O Sháh, for “every soul shall taste of death,”1 and this, in very truth, hath been written down as a decree of God.
+In this article we will take just such a scenario and go through the process step by step. The objective is to learn what steps are necessary and in what order to perform such a decomposition.
 
-```javascript
-const hell = 2 + 8
+# The Initial Application
+
+This is a very simple React application that fetches some images from the NASA API and allows the user to scroll through the returned images.
+
+![Screenshot](./images/decomposing_react_001.jpg)
+
+The entire application is written as just one component named App. The full code for this component looks like this:
+
+
+```jsx
+import React, { useState } from 'react';
+import './App.css';
+import moment from 'moment';
+
+const App = () => {
+  const [images, setImages] = useState([]);
+  const [count, setCount] = useState(0);
+  const [image_type, setImageType] = useState('nebula');
+  const [error, setError] = useState('');
+  const [page, setPage] = useState(1);
+  const [currentImage, setCurrentImage] = useState(-1);
+
+  const fetchImages = () => {
+    const url = `https://images-api.nasa.gov/search?q=${image_type}&media_type=image&page=${page}`;
+    fetch(url)
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw new Error('Problems getting the data.');
+      })
+      .then(({ collection }) => {
+        console.log(collection);
+        const {
+          metadata: { total_hits: count },
+          items
+        } = collection;
+
+        const images = items.map(item => {
+          const { center, date_created, description, title } = item.data[0];
+          const { href } = item.links[0];
+          return { center, date_created, description, title, href };
+        });
+        setCount(count);
+        setImages(images);
+        if (count > 0) {
+          setCurrentImage(0);
+        }
+      })
+      .catch(error => setError(error.message));
+  };
+
+  const imageCard =
+    currentImage > -1 ? (
+      <div className="card">
+        <img src={images[currentImage].href} alt={images[currentImage].title} />
+        <div className="card_content">
+          <h3>{images[currentImage].title}</h3>
+
+          <div className="card_description">
+            {images[currentImage].description}
+          </div>
+
+          <div className="card_date">
+            {moment(images[currentImage].date_created).format('DD MMMM YYYY')}
+          </div>
+        </div>
+      </div>
+    ) : (
+      ''
+    );
+
+  const controls =
+    currentImage > -1 ? (
+      <div className="controls">
+        <button
+          disabled={currentImage < 1}
+          onClick={e => setCurrentImage(currentImage - 1)}
+        >
+          &lt;
+        </button>
+        <div className="control_count">
+          Image {currentImage + 1} of {count}
+        </div>
+        {currentImage < count ? (
+          <button onClick={e => setCurrentImage(currentImage + 1)}>&gt;</button>
+        ) : (
+          ''
+        )}
+      </div>
+    ) : (
+      ''
+    );
+
+  const artifacts = ['planet', 'nebula', 'galaxy', 'pulsar'];
+  const options = artifacts.map((a, i) => (
+    <option value={a} key={i}>
+      {a}
+    </option>
+  ));
+
+  return (
+    <div className="App">
+      <header>
+        <h1>NASA Image Explorer</h1>
+      </header>
+      <div className="options">
+        <h3>Select An option:</h3>
+        <div className="options_form">
+          <select
+            value={image_type}
+            onChange={e => setImageType(e.target.value)}
+          >
+            {options}
+          </select>
+          <button onClick={fetchImages}> Search </button>
+          {error ? <div className="error">{error}</div> : ''}
+        </div>
+      </div>
+      <div>{imageCard}</div>
+      {controls}
+    </div>
+  );
+};
+
+export default App;
+
 ```
 
+As you can see this component is doing quite a lot. That is why we want to decompose it into smaller components. But what are teh smaller components and how do we access teh data in the component that needs it? We will walk through those steps next.
 
-<div className="articleImage">  
-
-![Gate](./images/gate_shrine.jpg)
-
-</div>    
+## Plan the decomposition
 
 
-Whats going on
