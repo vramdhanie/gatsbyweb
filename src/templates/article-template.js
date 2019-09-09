@@ -15,7 +15,7 @@ const ArticleTemplate = ({ data, className }) => {
   const img = image.childImageSharp.fluid
 
   const disqusConfig = {
-    url: `${config.siteUrl}/${slug}`,
+    url: `${data.site.siteMetadata.siteUrl}/${slug}`,
     identifier: slug,
     title: title
   }
@@ -63,7 +63,15 @@ export const query = graphql`
       }
       body
     }
+    site {
+      siteMetadata {
+        siteUrl
+      }
+    }
   }
+  
+    
+  
 `
 
 export default styled(ArticleTemplate)`
