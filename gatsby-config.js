@@ -96,7 +96,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-disqus`,
       options: {
-        shortname: `vincentramdhanie.disqus.com`
+        shortname: `vincentramdhanie`
       }
     },
     // this (optional) plugin enables Progressive Web App + Offline functionality
