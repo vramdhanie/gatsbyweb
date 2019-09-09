@@ -259,3 +259,80 @@ const imageCard = currentImage > -1 ? <Card image={images[cardImage]} /> : '';
 ```
 
 Once again the application should run as before. The full code for this change can be found in the **card_component** branch of [the repo](https://github.com/vramdhanie/nasa_image_explorer/tree/card_component).
+
+## Options Component
+The options component is completely defined in the JSX of the `App` component.
+
+```javascript
+      <div className="options">
+        <h3>Select An option:</h3>
+        <div className="options_form">
+          <select
+            value={image_type}
+            onChange={e => setImageType(e.target.value)}
+          >
+            {options}
+          </select>
+          <button onClick={fetchImages}> Search </button>
+          {error ? <div className="error">{error}</div> : ''}
+        </div>
+      </div>
+```
+
+There are several things to note about this code though.
+
+  1. The onChange event of the select box needs to call the `setImageType()` method. So we will have to pass a calback prop for that.
+  2. The onClick event of the button is set to the `fetchImages` function. That too will have to be passed as a callback prop.
+  3. The error message stored in the state needs to be passed as a prop.  
+  4. The current image type is used as the default value of the select. That needs to be passed as a prop.
+
+So we can start by creating a new file named `options.js` and create a function component named `Options` in that file. 
+This component should accept the four props specified above. 
+
+```javascript
+import React from 'react';
+
+const Options = ({ onChange, onClick, error, image_type }) => {
+  const artifacts = ['planet', 'nebula', 'galaxy', 'pulsar'];
+  const options = artifacts.map((a, i) => (
+    <option value={a} key={i}>
+      {a}
+    </option>
+  ));
+
+  return (
+    <div className="options">
+      <h3>Select An option:</h3>
+      <div className="options_form">
+        <select value={image_type} onChange={e => onChange(e.target.value)}>
+          {options}
+        </select>
+        <button onClick={onClick}> Search </button>
+        {error ? <div className="error">{error}</div> : ''}
+      </div>
+    </div>
+  );
+};
+
+export default Options;
+```
+
+In `App.js` this new component can be imported.
+
+```javascript
+import Options from './options';
+```
+
+And used in the JSX.
+
+```javascript
+      <Options
+        onChange={imageType => setImageType(imageType)}
+        onClick={fetchImages}
+        error={error}
+        image_type={image_type}
+      />
+```
+
+The code with this change can be found in the **options_component** branch on the [repo](https://github.com/vramdhanie/nasa_image_explorer/tree/options_component).
+
