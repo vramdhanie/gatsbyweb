@@ -2,6 +2,7 @@ import React from "react"
 import styled from "styled-components"
 import Image from "gatsby-image"
 import { Link } from "gatsby"
+import { FaCircle } from 'react-icons/fa'
 
 const ArticleCard = ({ className, article, excerpt }) => {
   const { title, date, author, slug } = article
@@ -15,7 +16,7 @@ const ArticleCard = ({ className, article, excerpt }) => {
         <div>
           <h2>{title}</h2>
           <h6>
-            <span>by {author}</span> / <span>{date}</span>
+            <span>by {author}</span> <FaCircle className="dot" /> <span>{date}</span>
           </h6>
           <p>{excerpt}</p>
           <Link to={slug} className="link">
@@ -60,6 +61,10 @@ export default styled(ArticleCard)`
   .link:hover {
     background: var(--primaryDark);
     color: #ffffff;
+  }
+  .dot {
+    opacity: 0.5;
+    font-size: 0.6rem;
   }
   @media (min-width: 776px) {
     display: grid;

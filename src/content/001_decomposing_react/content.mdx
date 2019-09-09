@@ -259,3 +259,244 @@ const imageCard = currentImage > -1 ? <Card image={images[cardImage]} /> : '';
 ```
 
 Once again the application should run as before. The full code for this change can be found in the **card_component** branch of [the repo](https://github.com/vramdhanie/nasa_image_explorer/tree/card_component).
+
+## Options Component
+The options component is completely defined in the JSX of the `App` component.
+
+```javascript
+      <div className="options">
+        <h3>Select An option:</h3>
+        <div className="options_form">
+          <select
+            value={image_type}
+            onChange={e => setImageType(e.target.value)}
+          >
+            {options}
+          </select>
+          <button onClick={fetchImages}> Search </button>
+          {error ? <div className="error">{error}</div> : ''}
+        </div>
+      </div>
+```
+
+There are several things to note about this code though.
+
+  1. The onChange event of the select box needs to call the `setImageType()` method. So we will have to pass a calback prop for that.
+  2. The onClick event of the button is set to the `fetchImages` function. That too will have to be passed as a callback prop.
+  3. The error message stored in the state needs to be passed as a prop.  
+  4. The current image type is used as the default value of the select. That needs to be passed as a prop.
+
+So we can start by creating a new file named `options.js` and create a function component named `Options` in that file. 
+This component should accept the four props specified above. 
+
+```javascript
+import React from 'react';
+
+const Options = ({ onChange, onClick, error, image_type }) => {
+  const artifacts = ['planet', 'nebula', 'galaxy', 'pulsar'];
+  const options = artifacts.map((a, i) => (
+    <option value={a} key={i}>
+      {a}
+    </option>
+  ));
+
+  return (
+    <div className="options">
+      <h3>Select An option:</h3>
+      <div className="options_form">
+        <select value={image_type} onChange={e => onChange(e.target.value)}>
+          {options}
+        </select>
+        <button onClick={onClick}> Search </button>
+        {error ? <div className="error">{error}</div> : ''}
+      </div>
+    </div>
+  );
+};
+
+export default Options;
+```
+
+In `App.js` this new component can be imported.
+
+```javascript
+import Options from './options';
+```
+
+And used in the JSX.
+
+```javascript
+      <Options
+        onChange={imageType => setImageType(imageType)}
+        onClick={fetchImages}
+        error={error}
+        image_type={image_type}
+      />
+```
+
+The code with this change can be found in the **options_component** branch on the [repo](https://github.com/vramdhanie/nasa_image_explorer/tree/options_component).
+
+## Controls Component
+The controls component is similar to the previous one. There are some data that needs to be passed down from the parent as well as a callback prop for the `setCurrentImage` function.
+
+The JSX code for this component is all defined in the controls const of App.
+
+```javascript
+<div className="controls">
+        <button
+          disabled={currentImage < 1}
+          onClick={e => setCurrentImage(currentImage - 1)}
+        >
+          &lt;
+        </button>
+        <div className="control_count">
+          Image {currentImage + 1} of {count}
+        </div>
+        {currentImage < count ? (
+          <button onClick={e => setCurrentImage(currentImage + 1)}>&gt;</button>
+        ) : (
+          ''
+        )}
+      </div>
+```
+
+In this code we have two buttons that call the same `setCurrentImage` function. We also have the `currentImage` and the `count` values to display.
+
+To start create a new file named `controls.js` and create a function component that returns the same JSX code. Let it accept rops for the currentImage, count and the onClick event of the buttons.
+
+```javascript
+import React from 'react';
+
+const Controls = ({ onClick, currentImage, count }) => {
+  return (
+    <div className="controls">
+      <button
+        disabled={currentImage < 1}
+        onClick={e => onClick(currentImage - 1)}
+      >
+        &lt;
+      </button>
+      <div className="control_count">
+        Image {currentImage + 1} of {count}
+      </div>
+      {currentImage < count ? (
+        <button onClick={e => onClick(currentImage + 1)}>&gt;</button>
+      ) : (
+        ''
+      )}
+    </div>
+  );
+};
+
+export default Controls;
+```
+
+Then in the `App.js` file import this new component.
+
+```javascript
+import Controls from './controls';
+```
+
+And replace the original JSX code with this component.
+
+```javascript
+  const controls =
+    currentImage > -1 ? (
+      <Controls
+        onClick={setCurrentImage}
+        currentImage={currentImage}
+        count={count}
+      />
+    ) : (
+      ''
+    );
+```
+
+
+The final  code for `App.js` should now look like this:
+
+```javascript
+import React, { useState } from 'react';
+import './App.css';
+import Header from './header';
+import Card from './card';
+import Options from './options';
+import Controls from './controls';
+
+const App = () => {
+  const [images, setImages] = useState([]);
+  const [count, setCount] = useState(0);
+  const [image_type, setImageType] = useState('nebula');
+  const [error, setError] = useState('');
+  const [page, setPage] = useState(1);
+  const [currentImage, setCurrentImage] = useState(-1);
+
+  const fetchImages = () => {
+    const url = `https://images-api.nasa.gov/search?q=${image_type}&media_type=image&page=${page}`;
+    fetch(url)
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw new Error('Problems getting the data.');
+      })
+      .then(({ collection }) => {
+        const {
+          metadata: { total_hits: count },
+          items
+        } = collection;
+
+        const images = items.map(item => {
+          const { center, date_created, description, title } = item.data[0];
+          const { href } = item.links[0];
+          return { center, date_created, description, title, href };
+        });
+        setCount(count);
+        setImages(images);
+        if (count > 0) {
+          setCurrentImage(0);
+        }
+      })
+      .catch(error => setError(error.message));
+  };
+
+  const imageCard =
+    currentImage > -1 ? <Card image={images[currentImage]} /> : '';
+
+  const controls =
+    currentImage > -1 ? (
+      <Controls
+        onClick={setCurrentImage}
+        currentImage={currentImage}
+        count={count}
+      />
+    ) : (
+      ''
+    );
+
+  return (
+    <div className="App">
+      <Header />
+      <Options
+        onChange={imageType => setImageType(imageType)}
+        onClick={fetchImages}
+        error={error}
+        image_type={image_type}
+      />
+      <div>{imageCard}</div>
+      {controls}
+    </div>
+  );
+};
+
+export default App;
+
+```
+
+Notice how much simpler this code has become? As we push functionality to the other components this component becomes simpler. The full code for the app in this state may be found in the **controls_component** branch of [the repo](https://github.com/vramdhanie/nasa_image_explorer/tree/controls_component).
+
+## Conclusion
+Decomposing components is a necessary process in your React apps as you aim to build well encapsulated code made of single minded components.
+The exact way you breal out components depend entirely on the situation at hand but at least you would have some guide to what you need to do from this article.
+
+This example app was kept deliberately simple just to illustrate the one concept of refactoring the components. Remember that there are many other considerations that may be necessary to build real applications such as testing, default props, prop types and the like.
