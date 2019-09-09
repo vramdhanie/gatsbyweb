@@ -4,11 +4,22 @@ import { Link, graphql } from "gatsby"
 import Image from "gatsby-image"
 import Layout from "../components/layout"
 import { MDXRenderer } from "gatsby-plugin-mdx"
+import { FaCircle } from 'react-icons/fa'
+import { Disqus, CommentCount } from 'gatsby-plugin-disqus'
+
+
 
 const ArticleTemplate = ({ data, className }) => {
-  const { title, date, author, image } = data.mdx.frontmatter
+  const { title, date, author, image, slug } = data.mdx.frontmatter
   const { body } = data.mdx
   const img = image.childImageSharp.fluid
+
+  const disqusConfig = {
+    url: `${data.site.siteMetadata.siteUrl}/${slug}`,
+    identifier: slug,
+    title: title
+  }
+
   return (
     <Layout>
       <section className={className}>
@@ -18,12 +29,16 @@ const ArticleTemplate = ({ data, className }) => {
         <div className="info">
           <h1>{title}</h1>
           <h4>
-            <span>by {author} </span> / <span>{date}</span>
+            <span>by {author} </span> <FaCircle className="dot" /> <span>{date}</span>
           </h4>
         </div>
         <Image fluid={img} />
         <div className="content">
           <MDXRenderer>{body}</MDXRenderer>
+        </div>
+        <div className="comments">
+          <CommentCount config={disqusConfig} placeholder="..." />
+          <Disqus config={disqusConfig} />
         </div>
       </section>
     </Layout>
@@ -48,7 +63,15 @@ export const query = graphql`
       }
       body
     }
+    site {
+      siteMetadata {
+        siteUrl
+      }
+    }
   }
+  
+    
+  
 `
 
 export default styled(ArticleTemplate)`
@@ -103,5 +126,9 @@ export default styled(ArticleTemplate)`
     display: block;
     max-width: 100% !important;
     margin: 2rem;
+  }
+  .dot {
+    opacity: 0.5;
+    font-size: 0.6rem;
   }
 `
