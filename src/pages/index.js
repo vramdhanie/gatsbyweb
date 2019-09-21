@@ -8,6 +8,7 @@ import Hero from "../components/hero"
 import Banner from "../components/banner"
 import About from "../components/home/about"
 import Featured from "../components/home/featured"
+import Projects from '../components/home/projects'
 import { graphql } from "gatsby"
 
 const IndexPage = ({ data }) => (
@@ -22,6 +23,7 @@ const IndexPage = ({ data }) => (
     </Hero>
     <About />
     <Featured articles={data.featured.edges} />
+    <Projects />
   </Layout>
 )
 
