@@ -74,6 +74,12 @@ module.exports = {
               noInlineHighlight: false,
             },
           },
+          {
+            resolve: `gatsby-remark-katex`,
+            options: {
+
+            }
+          }
         ],
       },
     },
