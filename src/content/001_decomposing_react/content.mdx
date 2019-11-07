@@ -142,7 +142,7 @@ export default App;
 
 ```
 
-As you can see this component is doing quite a lot. That is why we want to decompose it into smaller components. But what are the smaller components and how do we access teh data in the component that needs it? We will walk through those steps next.
+As you can see this component is doing quite a lot. That is why we want to decompose it into smaller components. But what are the smaller components and how do we access the data in the component that needs it? We will walk through those steps next.
 
 You can clone or download this version of the code from the **starter_app** branch on [this repository](https://github.com/vramdhanie/nasa_image_explorer/tree/starter_app).
 
@@ -158,7 +158,7 @@ Let us then look at the way we can refactor the code.
 ## Header Component
 The simplest component to work on is probably the header. This component does not require acccess to any data and in fact is debatable wether it needs to be refactored at all. We will still refactor it here as a first exercise though just to illustrate the process.
 
-Begin by creating a new file named  `header.js` in the src folder. Create a function component and copy teh header code from App.js to the new component. It should now look like this.
+Begin by creating a new file named  `header.js` in the src folder. Create a function component and copy the header code from App.js to the new component. It should now look like this.
 
 ```javascript
 import React from 'react'

@@ -6,6 +6,7 @@ import Layout from "../components/layout"
 import { MDXRenderer } from "gatsby-plugin-mdx"
 import { FaCircle } from 'react-icons/fa'
 import { Disqus, CommentCount } from 'gatsby-plugin-disqus'
+import 'katex/dist/katex.min.css'
 
 
 
