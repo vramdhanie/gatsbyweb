@@ -55,6 +55,12 @@ module.exports = {
               maxWidth: 590,
             },
           },
+          {
+            resolve: `gatsby-remark-katex`,
+            options: {
+
+            }
+          }
         ],
       },
     },
@@ -73,12 +79,6 @@ module.exports = {
               showLineNumbers: false,
               noInlineHighlight: false,
             },
-          },
-          {
-            resolve: `gatsby-remark-katex`,
-            options: {
-
-            }
           }
         ],
       },
