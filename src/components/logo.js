@@ -1,16 +1,34 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const Logo = ({className}) => {
-    return (
-        <div className={className}>
-            <div className="main_Text">
-                Collective 
+import { useStaticQuery, graphql } from "gatsby"
+import Img from "gatsby-image"
+
+const Logo = ({ className }) => {
+
+  const logo = useStaticQuery(graphql`
+  query {
+    img: file(relativePath: { eq: "vrr_logo.png" }) {
+      childImageSharp {
+        fixed(width: 63) {
+          ...GatsbyImageSharpFixed
+        }
+      }
+    }
+  }
+`)
+  return (
+    <div className={className}>
+      <Img fixed={logo.img.childImageSharp.fixed} />
+      <div className="text">
+        <div className="main_Text">
+          Collective
                 <span className="main_highlight">Action</span>
-            </div>
-            <div className="sub_text">United Vision</div>
         </div>
-    )
+        <div className="sub_text">United Vision</div>
+      </div>
+    </div>
+  )
 }
 
 export default styled(Logo)`
@@ -18,6 +36,13 @@ export default styled(Logo)`
   color: var(--primary);
   font-weight: 400;
   font-size: 2rem;
+  width: 100%;
+  display: flex;
+
+  .text {
+    margin-left: 4px;
+    padding: 4px;
+  }
 
   .sub_text {
       font-size: 1rem;

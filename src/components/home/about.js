@@ -59,9 +59,9 @@ const Wrapper = styled.section`
   }
   .about-img {
     position: relative;
-  }
-
-  .about-img img {
+  } 
+  
+   .about-img img {
     width: 100%;
     display: block;
     box-shadow: var(--lightShadow);
