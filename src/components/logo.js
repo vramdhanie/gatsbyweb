@@ -6,27 +6,29 @@ import Img from "gatsby-image"
 
 const Logo = ({ className }) => {
 
-    const logo = useStaticQuery(graphql`
+  const logo = useStaticQuery(graphql`
   query {
-    img: file(relativePath: { eq: "logo.png" }) {
+    img: file(relativePath: { eq: "vrr_logo.png" }) {
       childImageSharp {
-        fluid(maxWidth: 300) {
-          ...GatsbyImageSharpFluid
+        fixed(width: 63) {
+          ...GatsbyImageSharpFixed
         }
       }
     }
   }
 `)
-    return (
-        <div className={className}>
-            {/* <div className="main_Text">
-                Collective
+  return (
+    <div className={className}>
+      <Img fixed={logo.img.childImageSharp.fixed} />
+      <div className="text">
+        <div className="main_Text">
+          Collective
                 <span className="main_highlight">Action</span>
-            </div>
-            <div className="sub_text">United Vision</div> */}
-            <Img fluid={logo.img.childImageSharp.fluid} />
         </div>
-    )
+        <div className="sub_text">United Vision</div>
+      </div>
+    </div>
+  )
 }
 
 export default styled(Logo)`
@@ -35,10 +37,13 @@ export default styled(Logo)`
   font-weight: 400;
   font-size: 2rem;
   width: 100%;
+  display: flex;
 
-  img {
-      width: 100%;
+  .text {
+    margin-left: 4px;
+    padding: 4px;
   }
+
   .sub_text {
       font-size: 1rem;
       font-weight: 300;
