@@ -27,7 +27,7 @@ const Footer = () => {
         ))}
       </div>
       <div className={styles.copyright}>
-        © {new Date().getFullYear()}, Vincent Ramdhanie
+        © {new Date().getFullYear()}, Vincent Ramdhanie 🇹🇹
         {` `}
       </div>
       <div className={styles.attribution}>
