@@ -22,10 +22,10 @@ const Logo = ({ className }) => {
       <Img fixed={logo.img.childImageSharp.fixed} />
       <div className="text">
         <div className="main_Text">
-          Collective
-                <span className="main_highlight">Action</span>
+          Vincent
+                <span className="main_highlight">Ramdhanie</span>
         </div>
-        <div className="sub_text">United Vision</div>
+        <div className="sub_text">Software Developer, Teacher</div>
       </div>
     </div>
   )
