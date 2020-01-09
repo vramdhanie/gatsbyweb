@@ -2,7 +2,7 @@ import React from "react"
 import styled from "styled-components"
 import Image from "gatsby-image"
 import { Link } from "gatsby"
-import { FaCircle } from 'react-icons/fa'
+import { FaCircle } from "react-icons/fa"
 
 const FeaturedCard = ({ className, article, excerpt }) => {
   const { title, date, author, slug } = article
@@ -13,12 +13,13 @@ const FeaturedCard = ({ className, article, excerpt }) => {
         <Image fluid={img} />
       </div>
       <div className="info">
+        <h2>{title}</h2>
+        <h6>
+          <span>by {author}</span> <FaCircle className="dot" />{" "}
+          <span>{date}</span>
+        </h6>
+        <p>{excerpt}</p>
         <div>
-          <h2>{title}</h2>
-          <h6>
-            <span>by {author}</span> <FaCircle className="dot" /> <span>{date}</span>
-          </h6>
-          <p>{excerpt}</p>
           <Link to={slug} className="link">
             read more
           </Link>
@@ -35,8 +36,14 @@ export default styled(FeaturedCard)`
   background: #ffffff;
   padding: 1rem;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+
   .info {
     padding: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
   }
   .info h2 {
     font-size: 30px;
@@ -50,6 +57,7 @@ export default styled(FeaturedCard)`
   .info p {
     padding: 20px 0 30px 0;
     text-align: left;
+    flex: 1;
   }
   .link {
     border: 1px solid var(--primaryDark);
