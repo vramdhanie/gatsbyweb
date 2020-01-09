@@ -21,25 +21,32 @@ query {
         }
       }
     }
+    nirav: file(relativePath: { eq: "nirav_screenshot.png" }) {
+      childImageSharp {
+        fluid(maxWidth: 600) {
+            ...GatsbyImageSharpFluid_withWebp
+        }
+      }
+    }
 }
 `
 const Projects = ({ className }) => {
-    const data = useStaticQuery(getImages)
+  const data = useStaticQuery(getImages)
 
-    return (
-        <section className={className}>
-            <Title title="Featured" subtitle="projects" />
-            <div className="featured_projects">
-                {projects.map((project, index) => (
-                    <ProjectCard
-                        img={data[project.screenshot].childImageSharp.fluid}
-                        key={index}
-                        {...project}
-                    />
-                ))}
-            </div>
-        </section>
-    )
+  return (
+    <section className={className}>
+      <Title title="Featured" subtitle="projects" />
+      <div className="featured_projects">
+        {projects.map((project, index) => (
+          <ProjectCard
+            img={data[project.screenshot].childImageSharp.fluid}
+            key={index}
+            {...project}
+          />
+        ))}
+      </div>
+    </section>
+  )
 }
 
 export default styled(Projects)`

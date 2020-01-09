@@ -15,7 +15,7 @@ const IndexPage = ({ data }) => (
   <Layout>
     <SEO title="Home" />
     <Hero home="true" img={data.homeBg.childImageSharp.fluid}>
-      <Banner title="Collective Action" info="United Vision">
+      <Banner title="A Programming" info="Deep Dive">
         <AniLink fade to="/articles" className="btn-white">
           explore articles
         </AniLink>
