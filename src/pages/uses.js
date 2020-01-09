@@ -129,7 +129,7 @@ const Uses = ({ data, className }) => (
                     </div>
                     <div className="link">
                         <a href="https://ohmyz.sh/" title="Oh My Zsh Website" rel="noopener noreferrer" target="_blank">
-                            Og My Zsh
+                            Oh My Zsh
                     </a>
                     </div>
                 </div>
@@ -153,7 +153,7 @@ margin: 0 auto;
 .attribution {
     font-size: 0.9rem;
     margin-top: 8px;
-    
+
 }
 
 .entry {
