@@ -27,15 +27,19 @@ const About = () => {
 
   return (
     <Wrapper>
-      <Title title="about" subtitle="us" />
+      <Title title="about" subtitle="me" />
       <div className="about-center">
         <article className="about-img">
           <Img fluid={fluid} alt="Chilean Temple" />
         </article>
         <article className="about-info">
-          <h4>Software and Data</h4>
-          <p>A collection of articles and tutorials about software development and programming.</p>
-          <p></p>
+          <h4>Lecturer, Mentor, Software Developer, Bahá’í</h4>
+          <p>Working for a united world. The work we do as developers can make a better world.</p>
+          <blockquote>
+            ...we must all strive with heart and soul until we have the reality of unity in our midst
+            <div className="author">— ‘Abdu’l-Bahá</div>
+
+          </blockquote>
           <AniLink fade to="/about" className="btn-primary">
             Read more
         </AniLink>
@@ -48,7 +52,7 @@ const About = () => {
 const Wrapper = styled.section`
   padding: 4rem 0;
   .about-center {
-    width: 80vw;
+    width: 90vw;
     margin: 0 auto;
   }
   .about-img {
@@ -63,22 +67,29 @@ const Wrapper = styled.section`
   
    .about-img img {
     width: 100%;
+    max-width: 600px;
     display: block;
     box-shadow: var(--lightShadow);
   }
   .about-img div {
     box-shadow: var(--lightShadow);
+    max-width: 600px;
+    margin: 0 auto;
   }
   .about-info h4 {
     font-size: 1.9rem;
     text-transform: uppercase;
   }
 
-  @media screen and (min-width: 768px) {
+  .author {
+    text-align: right;
+  }
+
+   @media screen and (min-width: 768px) {
     .about-center {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      grid-column-gap: 3rem;
+      grid-column-gap: 1.5rem;
       align-items: center;
       margin-top: 3rem;
     }
@@ -94,9 +105,9 @@ const Wrapper = styled.section`
       max-height: 500px;
     }
     .about-info p {
-      width: 80%;
+      width: 90%;
     }
-  }
+  } 
   @media screen and (min-width: 992px) {
     .img-container::before {
       content: "";
@@ -109,6 +120,8 @@ const Wrapper = styled.section`
       left: -16px;
       z-index: -1;
     }
+    
+    
   }
 
   @media screen and (min-width: 1200px) {
