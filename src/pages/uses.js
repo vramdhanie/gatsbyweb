@@ -22,6 +22,7 @@ const Uses = ({ data, className }) => (
         <section className={className}>
             <div className="explain">Below is a list of tools and environments that I use in my daily work
             as a software developer, lecturer and technical writer.</div>
+            <div className="attribution">Inspired by Wes Bos' <a href="https://github.com/wesbos/awesome-uses">Awesome Uses</a> page.</div>
             <section className="group">
                 <Title title="Code" subtitle="Editors" />
                 <div className="entry">
@@ -88,13 +89,54 @@ const Uses = ({ data, className }) => (
                         Alright, some controversy exist over this, but I have no problem with prettier formatting my code for me after I set up the rules that I like.
                     </div>
                     <div className="link">
-                        <a href="https://prettier.io/" title="Emmet Website" rel="noopener noreferrer" target="_blank">
+                        <a href="https://prettier.io/" title="Prettier Website" rel="noopener noreferrer" target="_blank">
                             Prettier
+                    </a>
+                    </div>
+                </div>
+
+                <div className="entry">
+                    <h3>ESLint</h3>
+                    <div className="explanation">
+                        Sometimes ESLint and prettier gets into a fight but both are useful so its worth making them work together.
+                    </div>
+                    <div className="link">
+                        <a href="https://eslint.org/" title="ESlint Website" rel="noopener noreferrer" target="_blank">
+                            ESLint
+                    </a>
+                    </div>
+                </div>
+            </section>
+
+            <section className="group">
+                <Title title="Terminals" subtitle="" />
+                <div className="entry">
+                    <h3>Zsh</h3>
+                    <div className="explanation">
+                        Adopted this after macOS did. Spent years on Bash. There are a few features of Zsh that I like but so far no impactful difference.
+                    </div>
+                    <div className="link">
+                        <a href="https://en.wikipedia.org/wiki/Z_shell" title="Zsh Website" rel="noopener noreferrer" target="_blank">
+                            Zsh
+                    </a>
+                    </div>
+                </div>
+
+                <div className="entry">
+                    <h3>Oh My Zsh</h3>
+                    <div className="explanation">
+                        Pretty decent tool for configuring and managing the Zsh terminal. I may have used less than 1% of the goodies that it offers so far but I'm happy with it.
+                    </div>
+                    <div className="link">
+                        <a href="https://ohmyz.sh/" title="Oh My Zsh Website" rel="noopener noreferrer" target="_blank">
+                            Og My Zsh
                     </a>
                     </div>
                 </div>
             </section>
         </section>
+
+
     </Layout>
 )
 
@@ -106,6 +148,12 @@ margin: 0 auto;
 
 .group {
     margin-top: 2rem;
+}
+
+.attribution {
+    font-size: 0.9rem;
+    margin-top: 8px;
+    
 }
 
 .entry {

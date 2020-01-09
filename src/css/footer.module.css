@@ -32,10 +32,11 @@
   text-transform: capitalize;
   letter-spacing: var(--mainSpacing);
   line-height: 2;
+  font-size: 0.8rem;
 }
 
 .attribution {
-  font-size: 0.7em;
+  font-size: 0.6em;
   margin-top: 5px;
 }
 
