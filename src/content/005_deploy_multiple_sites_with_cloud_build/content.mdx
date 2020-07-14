@@ -1,0 +1,94 @@
+---
+title: Deploy multiple firebase sites with Google cloud build
+slug: deploy_multiple_sites_with_cloud_build
+image: ./images/clouds.jpg
+date: 2020-07-11
+author: Vincent Ramdhanie
+level: beginner
+tags: cloud build ci/cd firebase
+---
+
+In August of 2018 Firebase announced that hosting multiple sites in the same Firebase project was possible.
+This was great news for sites that shared resources.
+I use Google Cloud Build to manage the deployment process of my applications to Firebase.
+So I decided to make use of this new feature and attempted to modify my Cloud Build configuration
+to allow deploying applications to different Firebase hosting sites in the same project.
+
+_This took me an inordinate amount of time and effort to figure out. That might be due to my limited
+understanding of the configuration. I found the existing documentation to be missing some steps.
+So I decided to document my solution here._
+
+In this article I will describe how I set up deploying two different applications to hosting sites in the same Firebase project.
+
+## The applications
+
+I am working on a public facing React application. Additionally,
+I want to create a preview version of the application for the internal team to review changes before they are deployed to the public site.
+There is a second administration application for use by the internal team to administer to the public facing application.
+
+![Architecture](./images/architecture.png)
+
+## Firebase setup
+
+On the Firebase console create a new project by clicking _Add project_ then entering a project name when prompted.
+Or alternativily, if you have an existing project that you wish to use then simply select that project. Follow the
+prompts to complete the process.
+
+If this is the first time you are setting up a Firebase project you should check the official documentation [here](https://firebase.google.com/docs/web/setup) for full details.
+
+Very briefly, the steps to setting up a project are:
+
+### Step 1 Project name
+
+Enter a name for your project and optionally add a project id. We will be using this project id later so making an easy to remember id here would be beneficial.
+
+![Create project](./images/firebase_001.jpg)
+
+### Step 2 Enable Google Analytics
+
+Optionally, enable Google Analytics for the project. This is recommended since you would want to track
+the usage of your application after it is deployed.
+
+![Create project](./images/firebase_002.jpg)
+
+### Step 3 Select Analytics account
+
+![Create project](./images/firebase_003.jpg)
+
+If you enabled Google Analytics in the previous step then you need to either create or select an existing Google Analytics account.
+
+### Step 4 Project creation
+
+Wait a few moments while the project is created.
+
+![Create project](./images/firebase_004.png)
+
+### Step 5 Done
+
+Congratulations! You have a new Firebase project. Click the **Continue** button.
+
+![Create project](./images/firebase_005.jpg)
+
+## Hosting
+
+Setting up hosting on your Firebase project is fairly straightforward. From your dashboard select **Hosting**.
+Then click on the **Get started** button. This starts a wizard that walks through the steps of setting up hosting.
+
+![Hosting](./images/hosting_001.jpg)
+
+### Step 1 Install Firebase CLI
+
+We will use the Firebase CLI to initialize and deploy the application on Firebase. The CLI is available as an `npm` package.
+Since we are learning about the setup you should click the checkbox labelled "Also show me the steps to add the Firebase JavaScript SDK...".
+
+![Hosting](./images/hosting_002.png)
+
+After running the `npm` command to install the Firebase CLI you can check that the installation worked by running
+
+```bash
+firebase --version
+```
+
+### Step 2 Initialise project
+
+The next step involves initializing Firebase in your project.
