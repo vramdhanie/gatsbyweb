@@ -4,11 +4,10 @@ import { Link, graphql } from "gatsby"
 import Image from "gatsby-image"
 import Layout from "../components/layout"
 import { MDXRenderer } from "gatsby-plugin-mdx"
-import { FaCircle } from 'react-icons/fa'
-import { Disqus, CommentCount } from 'gatsby-plugin-disqus'
-import 'katex/dist/katex.min.css'
-
-
+import { FaCircle } from "react-icons/fa"
+import { Disqus, CommentCount } from "gatsby-plugin-disqus"
+import "katex/dist/katex.min.css"
+import { ThemeProvider } from "@chakra-ui/core"
 
 const ArticleTemplate = ({ data, className }) => {
   const { title, date, author, image, slug } = data.mdx.frontmatter
@@ -18,31 +17,34 @@ const ArticleTemplate = ({ data, className }) => {
   const disqusConfig = {
     url: `${data.site.siteMetadata.siteUrl}/${slug}`,
     identifier: slug,
-    title: title
+    title: title,
   }
 
   return (
-    <Layout>
-      <section className={className}>
-        <Link className="link" to="/articles">
-          Back to all Articles
-        </Link>
-        <div className="info">
-          <h1>{title}</h1>
-          <h4>
-            <span>by {author} </span> <FaCircle className="dot" /> <span>{date}</span>
-          </h4>
-        </div>
-        <Image fluid={img} />
-        <div className="content">
-          <MDXRenderer>{body}</MDXRenderer>
-        </div>
-        <div className="comments">
-          <CommentCount config={disqusConfig} placeholder="..." />
-          <Disqus config={disqusConfig} />
-        </div>
-      </section>
-    </Layout>
+    <ThemeProvider>
+      <Layout>
+        <section className={className}>
+          <Link className="link" to="/articles">
+            Back to all Articles
+          </Link>
+          <div className="info">
+            <h1>{title}</h1>
+            <h4>
+              <span>by {author} </span> <FaCircle className="dot" />{" "}
+              <span>{date}</span>
+            </h4>
+          </div>
+          <Image fluid={img} />
+          <div className="content">
+            <MDXRenderer>{body}</MDXRenderer>
+          </div>
+          <div className="comments">
+            <CommentCount config={disqusConfig} placeholder="..." />
+            <Disqus config={disqusConfig} />
+          </div>
+        </section>
+      </Layout>
+    </ThemeProvider>
   )
 }
 
@@ -70,9 +72,6 @@ export const query = graphql`
       }
     }
   }
-  
-    
-  
 `
 
 export default styled(ArticleTemplate)`
