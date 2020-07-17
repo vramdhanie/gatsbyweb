@@ -2,7 +2,7 @@
 title: Deploy multiple firebase sites with Google cloud build
 slug: deploy_multiple_sites_with_cloud_build
 image: ./images/clouds.jpg
-date: 2020-07-11
+date: 2020-07-17
 author: Vincent Ramdhanie
 level: beginner
 tags: cloud build ci/cd firebase
@@ -380,3 +380,176 @@ Click on the build number link to see the progress of the build. Providing each 
 At this point we have the project auto deploying to the Firebase hosting site. The next step is to setup an alternative hosting site and deploy the preview version of the site to the alternative site.
 
 ## Multiple sites
+
+To support deployment to multiple sites we will have to
+
+- create the new site on Firebase
+- modify the _cloudbuild.yaml_ file and the _firebase.json_ file
+- create a new trigger
+
+### Create new hosting site
+
+On the **Hosting** page of the Firebase console look for the link that says **Add another site**.
+Then add a name for the site and click the **Add site** button.
+
+![Second site](./images/multi_001.png)
+
+### Configuration files
+
+First, we will update the _firebase.json_ file to define the two sites. At the moment the file contains an object with a single property `hosting`.
+The `hosting` property is an object defining the details of teh hosting. We can change that to an array of objects, each one defining a different
+site. Update the _firebase.json_ file like this:
+
+```json
+{
+  "hosting": [
+    {
+      "target": "master",
+      "public": "build",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    },
+    {
+      "target": "preview",
+      "public": "build",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    }
+  ]
+}
+```
+
+For each hosting site we add a property `target`. This value will be used later to specify the site when we deploy. Here, I am using the branch name as the target value
+for convenience. There is a built in `$BRANCH_NAME` variable that is available for any triggered builds. Later we can use this variable to determine whether we are
+building off of the master branch or the preview branch.
+
+Next, let us modify the _cloudbuild.yaml_ file. There are two things we need. First, we need to execute the `firebase target:apply` command
+to select a site, then modify the deploy command to specify a target. The `target:apply` command needs two values: the target we defined in the
+_firebase.json_ file and the site id.
+
+The `target:apply` command can be added just after the _build_ step in the file like this:
+
+```yaml
+- name: node
+  entrypoint: "./node_modules/.bin/firebase"
+  args:
+    [
+      "target:apply",
+      "--project",
+      "$PROJECT_ID",
+      "--token",
+      "$_TOKEN",
+      "hosting",
+      "$BRANCH_NAME",
+      "$_SITE_ID",
+    ]
+```
+
+`$BRANCH_NAME` is the provided variable and `$_SITE_ID` will need to be set by us in the trigger.
+
+The second change to this file is the deploy command. We need to add a `hosting` flag to the command specifying the target site.
+Update the deploy command as follows:
+
+```yaml
+- name: node
+  entrypoint: "./node_modules/.bin/firebase"
+  args:
+    [
+      "deploy",
+      "--project",
+      "$PROJECT_ID",
+      "--token",
+      "$_TOKEN",
+      "--only",
+      "hosting:$BRANCH_NAME",
+    ]
+```
+
+The complete _cloudbuild.yaml_ file will look like this when you are done:
+
+```yaml
+steps:
+  - name: node
+    entrypoint: yarn
+    args: ["install"]
+  - name: node
+    entrypoint: yarn
+    args: ["add", "firebase-tools"]
+  - name: node
+    entrypoint: yarn
+    args: ["build"]
+  - name: node
+    entrypoint: "./node_modules/.bin/firebase"
+    args:
+      [
+        "target:apply",
+        "--project",
+        "$PROJECT_ID",
+        "--token",
+        "$_TOKEN",
+        "hosting",
+        "$BRANCH_NAME",
+        "$_SITE_ID",
+      ]
+  - name: node
+    entrypoint: "./node_modules/.bin/firebase"
+    args:
+      [
+        "deploy",
+        "--project",
+        "$PROJECT_ID",
+        "--token",
+        "$_TOKEN",
+        "--only",
+        "hosting:$BRANCH_NAME",
+      ]
+```
+
+### Update trigger
+
+Let us first update the production trigger with the `$_SITE_ID` variable. Go to the Cloud uild console, select the **Triggers** page
+and click the _production-deploy_ trigger name to open the trigger editor. Scroll down and click the **Add Variable** button. Add a variable with the name `_SITE_ID`
+and the value the name of the production site.
+
+![Add variable](./images/multi_002.jpg)
+
+Click the **Save** button when done. To test this you may commit and push to the master branch again.
+
+### Create preview trigger
+
+Now its time to create a new trigger for the preview branch. Let us name this one _preview-deploy_. Since most of the values we need are the same as the previous trigger we
+can simply duplicate the existing trigger and change the necessary values. On the **Triggers** page of the Cloud Build console click on the _more_ icon on the extreme right
+of the production-deploy trigger and select **Duplicate**.
+
+![Duplicate trigger](./images/multi_003.png)
+
+Then clcik on the new trigger name and make the following modifications:
+
+- Set the name of the trigger to: **preview-deploy**
+- Set the description to: **Deploy the preview branch to the preview site** or something appropriate
+- Set the branch regex to: **^preview\$**
+- Set the `_SITE_ID` variable to the name of your preview site that you created on Firebase.
+
+Click **Save** when done.
+
+To test this new trigger create a preview branch and push it to your Github repository.
+
+## Summary
+
+Hosting multiple sites in the same project has the advantage that all of the sites can access the same resources such as storage or Firestore database.
+The setup is not easy when trying to use Cloud Build. It may be possible to improve the process or even create a better configuration than what was outlined above.
+However, that was what I was able to get working and it works fine.
+
+Future work would include auto generating preview sites for arbitrary pull requests and would it be possible to target a test Firestore or a test storage bucket when its just a test site.
+
+If you have suggestions please feel free to make a comment below.
