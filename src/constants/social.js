@@ -8,7 +8,8 @@ export default [
   },
   {
     icon: <FaTwitter />,
-    url: "https://twitter.com/vramdhanie",
+    url:
+      "https://twitter.com/intent/tweet?screen_name=vramdhanie&ref_src=twsrc%5Etfw",
   },
   {
     icon: <FaGithub />,
