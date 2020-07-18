@@ -4,10 +4,10 @@ import { Link, graphql } from "gatsby"
 import Image from "gatsby-image"
 import Layout from "../components/layout"
 import { MDXRenderer } from "gatsby-plugin-mdx"
-import { FaCircle } from "react-icons/fa"
+import { FaCircle, FaTwitter } from "react-icons/fa"
 import { Disqus, CommentCount } from "gatsby-plugin-disqus"
 import "katex/dist/katex.min.css"
-import { ThemeProvider } from "@chakra-ui/core"
+import { ThemeProvider, Tooltip } from "@chakra-ui/core"
 
 const ArticleTemplate = ({ data, className }) => {
   const { title, date, author, image, slug } = data.mdx.frontmatter
@@ -33,6 +33,22 @@ const ArticleTemplate = ({ data, className }) => {
               <span>by {author} </span> <FaCircle className="dot" />{" "}
               <span>{date}</span>
             </h4>
+            <Tooltip hasArrow label="Share on Twitter" placement="top">
+              <div>
+                <a
+                  href="https://twitter.com/share?ref_src=twsrc%5Etfw"
+                  className="twitter-share-button"
+                  data-show-count="false"
+                >
+                  <FaTwitter />
+                </a>
+                <script
+                  async
+                  src="https://platform.twitter.com/widgets.js"
+                  charSet="utf-8"
+                ></script>
+              </div>
+            </Tooltip>
           </div>
           <Image fluid={img} />
           <div className="content">
@@ -80,6 +96,9 @@ export default styled(ArticleTemplate)`
   max-width: 750px;
   padding: 2rem;
   background: var(--mainWhite);
+
+  .tweet {
+  }
 
   .link {
     border: 1px solid var(--mainBlack);
